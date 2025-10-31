@@ -1,21 +1,46 @@
-// components/Button.stories.tsx
 import type { Meta, StoryObj } from "@storybook/react";
-import Button from "@/components/Button/Button";
-import {fn} from "@vitest/spy";
+import {Button} from "@/components/Button/Button";
+import {ComponentProps} from "react";
+import { fn } from '@storybook/test';
 
-const meta: Meta<typeof Button> = {
-    title: "Components/Button", // how it appears in the sidebar
+type StoryProps = ComponentProps<typeof Button> & {
+    buttonText:string;
+};
+
+const meta: Meta<StoryProps> = {
+    title: "Components/Button",
     component: Button,
-    tags: ["autodocs"], // optional
+    argTypes:{
+        variant: {
+            options:["primary","secondary"],
+            control: {
+                type:"select"
+            }
+        },
+        size: {
+            options:["sm","md","lg"],
+            control: {
+                type:"select"
+            }
+        }
+    },
+    args:{
+        onClick:fn()
+    },
+    tags: ["autodocs"],
 };
 
 export default meta;
-type Story = StoryObj<typeof Button>;
 
-export const Primary: Story = {
-    args: { label: "Click Me" },
+type Story = StoryObj<StoryProps>;
+
+export const Example: Story = {
+    args: {
+        buttonText:"test",
+        variant: "primary",
+        size: "sm"
+    },
+    render: ({buttonText,...args}) => <Button {...args} >{buttonText}</Button>
 };
 
-export const Secondary: Story = {
-    args: { label: "Cancel" },
-};
+
